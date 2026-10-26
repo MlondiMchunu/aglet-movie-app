@@ -14,7 +14,7 @@ router.post('/login', async (req, res, next) => {
     if (!username || !password) return res.status(400).json({ error: 'Enter your username/email and password.' });
 
     const result = await pool.query(
-      'SELECT id, username, email, password FROM users WHERE username = $1 OR email = $1',
+      'SELECT id, username, email, password FROM users WHERE LOWER(username) = LOWER($1) OR LOWER(email) = LOWER($1)',
       [username]
     );
     let user = null;
