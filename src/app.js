@@ -9,6 +9,10 @@ const favoriteRoutes = require('./routes/favorite-routes');
 const app = express();
 const port = Number(process.env.PORT || 3000);
 
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
   console.warn('WARNING: Set SESSION_SECRET to a random string of at least 32 characters in .env.');
 }
