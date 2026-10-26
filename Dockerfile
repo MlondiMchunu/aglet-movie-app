@@ -1,0 +1,13 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --include=dev --no-fund --no-audit
+
+COPY . .
+RUN npm run build:css
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
