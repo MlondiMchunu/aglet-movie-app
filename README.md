@@ -101,7 +101,7 @@ cp .env.example .env
 For a local PostgreSQL server, `DATABASE_URL` typically has this form:
 
 ```dotenv
-DATABASE_URL=postgresql://aglet_app:choose-a-strong-password@localhost:5432/AGLET
+DATABASE_URL=postgresql://aglet_app:choose-a-strong-password@localhost:5432/movies
 SESSION_SECRET=replace-with-a-long-random-secret
 TMDB_ACCESS_TOKEN=paste-your-tmdb-api-read-access-token-here
 ```
