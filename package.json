@@ -1,0 +1,27 @@
+{
+  "name": "aglet-movie-app",
+  "version": "1.0.0",
+  "description": "TMDB movie discovery and favourites assessment project",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "db:setup": "node src/scripts/setup-db.js",
+    "db:seed": "node src/scripts/seed-user.js",
+    "build:css": "sass public/scss/main.scss public/css/main.css --no-source-map"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "sass": "^1.83.0"
+  }
+}
