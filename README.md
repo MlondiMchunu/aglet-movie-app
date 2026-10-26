@@ -39,15 +39,18 @@ database. It does not start a local database container.
 
     Set `DATABASE_URL` to your Aiven service URI, along with a strong
     `SESSION_SECRET` and your TMDB token. URL-encode special characters in the
-    database username or password. Use TLS verification parameters in the URL:
+    database username or password. The app uses the repository's `ca.pem` to
+    validate Aiven's TLS certificate. For Render, you can instead add Aiven's CA
+    certificate as a Secret File and set `PGSSLROOTCERT` to its path, commonly
+    `/etc/secrets/ca.pem`.
 
     ```dotenv
-    DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE?sslmode=verify-full&sslrootcert=/run/secrets/aiven-ca.pem
+    DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
     ```
 
-2. Download the CA certificate for the Aiven service and save it in the project
-    root as `aiven-ca.pem`. Compose mounts this certificate read-only into both
-    the app and restore containers. Do not commit the certificate or `.env`.
+2. Docker Compose mounts `ca.pem` read-only into the app and restore
+    containers. If Aiven rotates the CA, replace the file with the current
+    service CA before rebuilding. Do not commit database credentials or `.env`.
 
 3. Restore `movies_dump.sql` into the target Aiven database **once**, before
     starting the app:

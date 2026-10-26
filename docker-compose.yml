@@ -8,12 +8,13 @@ services:
       PORT: ${PORT:-3000}
       NODE_ENV: ${NODE_ENV:-production}
       DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL in .env to your Aiven PostgreSQL connection URL}"
+      PGSSLROOTCERT: /run/secrets/aiven-ca.pem
     ports:
       - "${PORT:-3000}:3000"
     volumes:
       - .:/app
       - /app/node_modules
-      - ./aiven-ca.pem:/run/secrets/aiven-ca.pem:ro
+      - ./ca.pem:/run/secrets/aiven-ca.pem:ro
     command: sh -c "npm run db:setup && npm start"
 
   restore-db:
@@ -24,8 +25,10 @@ services:
       - .env
     environment:
       DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL in .env to your Aiven PostgreSQL connection URL}"
+      PGSSLROOTCERT: /run/secrets/aiven-ca.pem
+      PGSSLMODE: verify-full
     volumes:
       - ./movies_dump.sql:/movies_dump.sql:ro
-      - ./aiven-ca.pem:/run/secrets/aiven-ca.pem:ro
+      - ./ca.pem:/run/secrets/aiven-ca.pem:ro
     entrypoint: ["sh", "-c"]
     command: "sed -e '/^ALTER TABLE .* OWNER TO postgres;$/d' -e '/^SET transaction_timeout = 0;$/d' /movies_dump.sql | psql \"$$DATABASE_URL\" -v ON_ERROR_STOP=1"
